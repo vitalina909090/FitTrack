@@ -11,7 +11,7 @@ const TabLayout = () => {
     const openDrawer = () => {
 
         navigation.dispatch(DrawerActions.openDrawer());
-      };
+    };
 
 
 
@@ -55,9 +55,9 @@ const TabLayout = () => {
                     <Pressable 
                         onPress={openDrawer} 
                         hitSlop={10}
-                        style={{ marginLeft: 10 }}
+                        style={{ marginHorizontal: 10 }}
                     >
-                        <Ionicons name="menu" size={26} color={COLORS.textPrimary} />
+                        <Ionicons name="menu" size={26} color={COLORS.primary} />
                     </Pressable>
                 )
             }}
