@@ -1,12 +1,21 @@
 import { COLORS } from '@/src/constants/theme';
-import { Tabs } from 'expo-router';
+import { Tabs, useNavigation } from 'expo-router';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
- 
+import { DrawerActions } from '@react-navigation/native';
 
 const TabLayout = () => {
-    return < Tabs
+    const navigation = useNavigation();
+
+    const openDrawer = () => {
+
+        navigation.dispatch(DrawerActions.openDrawer());
+      };
+
+
+
+    return <Tabs
         screenOptions={{
         tabBarActiveTintColor: COLORS.primary,
         tabBarInactiveTintColor: COLORS.textTertiary,
@@ -31,18 +40,28 @@ const TabLayout = () => {
       }}
     >
         <Tabs.Screen
-            name="index"
+            name="workout"
             options={{
                 title: "Тренування",
+
                 tabBarIcon: ({ focused, color, size }) => (
                     <Ionicons
                         name={focused ? "barbell" : "barbell-outline"}
                         size={size}
                         color={color}
                     />
+                ),
+                headerLeft: () => (
+                    <Pressable 
+                        onPress={openDrawer} 
+                        hitSlop={10}
+                        style={{ marginLeft: 10 }}
+                    >
+                        <Ionicons name="menu" size={26} color={COLORS.textPrimary} />
+                    </Pressable>
                 )
             }}
-        ></Tabs.Screen>
+        />
 
         <Tabs.Screen
             name="progress"
@@ -56,7 +75,7 @@ const TabLayout = () => {
                     />
                 )
             }}
-        ></Tabs.Screen>
+        />
 
         <Tabs.Screen
             name="profile"
@@ -70,7 +89,7 @@ const TabLayout = () => {
                     />
                 )
             }}
-        ></Tabs.Screen>
+        />
 
         <Tabs.Screen
             name="waterTracker"
@@ -84,7 +103,7 @@ const TabLayout = () => {
                     />
                 )
             }}
-        ></Tabs.Screen>        
+        />        
     </ Tabs>;
 }
 
