@@ -24,9 +24,10 @@ const AddWorkoutModal = ({visible, onClose}: Props) => {
     const [name, setName] = useState('');
     const [duration, setDuration] = useState('');
     const [category, setCategory] = useState<WorkoutCategory>('strength');
-    
+    const [errors, setErrors] = useState<{ name?: string; duration?: string }>({});
+
     const handleAdd = () => {
-        if (!name.trim()) return;
+        if (!validate()) return;
         addWorkout({
             id: Date.now().toString(),
             title: name.trim(),
@@ -35,17 +36,29 @@ const AddWorkoutModal = ({visible, onClose}: Props) => {
             scheduledAt: new Date().toISOString(),
             exercises: [],
         });
+        handleClose();
+    };
+
+    const handleClose = () => {
+        setErrors({});
         setName('');
         setDuration('');
         setCategory('strength');
         onClose();
     };
 
-    const handleClose = () => {
-        setName('');
-        setDuration('');
-        setCategory('strength');
-        onClose();
+    const validate = () => {
+        const newErrors: { name?: string; duration?: string } = {};
+        
+        if (!name.trim()) {
+            newErrors.name = 'Введіть назву тренування';
+        }
+        if (duration && (isNaN(Number(duration)) || Number(duration) <= 0)) {
+            newErrors.duration = 'Введіть коректну тривалість';
+        }
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     return (
@@ -67,24 +80,26 @@ const AddWorkoutModal = ({visible, onClose}: Props) => {
                     <View style={styles.inputContainer}>
                         <Text style={styles.subtitle}>Назва</Text>
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input, errors.name && styles.inputError]}
                             placeholder="Наприклад: Силове тренування А"
                             placeholderTextColor={COLORS.textTertiary}
                             value={name}
                             onChangeText={setName}
-                        />                        
+                        />
+                        {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}                        
                     </View>
 
                     <View style={styles.inputContainer}>
                         <Text style={styles.subtitle}>Тривалість (хвилини)</Text>
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input, errors.duration && styles.inputError]}
                             placeholder="60"
                             placeholderTextColor={COLORS.textTertiary}
                             keyboardType="numeric"
                             value={duration}
                             onChangeText={setDuration}
-                        />                            
+                        />
+                        {errors.duration && <Text style={styles.errorText}>{errors.duration}</Text>}                            
                     </View>
 
                     <View style={styles.inputContainer}>
@@ -187,7 +202,15 @@ const styles = StyleSheet.create({
         color: COLORS.surface,
         fontSize: 15,
         fontWeight: '600',        
-    }
+    },
+    inputError: {
+        borderColor: COLORS.error,
+    },
+    errorText: {
+        fontSize: 11,
+        color: COLORS.error,
+        marginLeft: 5
+    },    
 
 })
 
