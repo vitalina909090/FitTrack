@@ -3,7 +3,8 @@
 // Тимчасові дані — замінимо SQLite на тижні 5–6
 // =============================================================
 
-import type { WaterTareItem, Workout } from '../types/workout';
+import { WaterTareItem } from '../types/waterTracker';
+import type { Workout } from '../types/workout';
 
 export const MOCK_WORKOUTS: Workout[] = [
   {
