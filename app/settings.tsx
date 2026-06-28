@@ -6,6 +6,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SettingsScreen = () => {
     const router = useRouter();
@@ -18,7 +19,7 @@ const SettingsScreen = () => {
     
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Загальні</Text>
             <View style={[styles.settingsBox, SHADOW.sm]}>
                 <View style={styles.notification}>
@@ -47,7 +48,7 @@ const SettingsScreen = () => {
             </View>
             <Text style={styles.title}>Аккаунт</Text>
             <View style={[styles.settingsBox, SHADOW.sm]}>
-                <Pressable style={styles.notification} onPress={() => router.navigate("/profile")}>
+                <Pressable style={styles.notification} onPress={() => router.push("/profile")}>
                     <Ionicons name="person-outline" size={20} color={COLORS.primary} />
                     <Text style={styles.notificationText}>Профіль</Text>
                     <MaterialIcons name="arrow-forward-ios" size={15} color={COLORS.textTertiary} />                    
@@ -55,21 +56,20 @@ const SettingsScreen = () => {
 
                 <View style={styles.divider} />
 
-                <Pressable style={styles.notification} onPress={() => router.navigate("/privacy")}>
+                <Pressable style={styles.notification} onPress={() => router.push("/privacy")}>
                     <Ionicons name="shield-outline" size={20} color={COLORS.primary} />
                     <Text style={styles.notificationText}>Конфіденційність</Text>
                     <MaterialIcons name="arrow-forward-ios" size={15} color={COLORS.textTertiary} />                    
                 </Pressable>
             </View>
             <Text style={styles.footerText}>FitTrack v1.0.0 Тиждень 3</Text>           
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 50,
         paddingHorizontal: 20,
     },
     title: {

@@ -1,8 +1,8 @@
+import { WaterTare } from "@/src/constants/mockData";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
-import { COLORS } from "../src/constants/theme";
-import { WaterTare } from "@/src/constants/mockData";
+import { COLORS } from "../constants/theme";
 
 interface Props {
   modalVisible: boolean;
@@ -10,7 +10,11 @@ interface Props {
   handleAddWater: (amount: number) => void;
 }
 
-const WaterModal = ({ modalVisible, setModalVisible, handleAddWater }: Props) => {
+const WaterModal = ({
+  modalVisible,
+  setModalVisible,
+  handleAddWater,
+}: Props) => {
   const [selected, setSelected] = useState<number | null>(null);
 
   const handleConfirm = () => {

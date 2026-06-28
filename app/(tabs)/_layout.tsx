@@ -4,6 +4,7 @@ import React from 'react';
 import { Pressable, StyleSheet} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { DrawerActions } from '@react-navigation/native';
+import { useUIStore } from '@/src/store/uiStore';
 
 const TabLayout = () => {
     const navigation = useNavigation();
@@ -12,6 +13,9 @@ const TabLayout = () => {
 
         navigation.dispatch(DrawerActions.openDrawer());
     };
+
+    // modal
+    const openAddWorkoutModal = useUIStore((state) => state.openAddWorkoutModal);
 
 
 
@@ -59,7 +63,16 @@ const TabLayout = () => {
                     >
                         <Ionicons name="menu" size={26} color={COLORS.primary} />
                     </Pressable>
-                )
+                ),
+                headerRight: () => (
+                    <Pressable 
+                        onPress={openAddWorkoutModal} 
+                        hitSlop={10}
+                        style={{ marginRight: 10 }}
+                    >
+                        <Ionicons name="add-circle-outline" size={26} color={COLORS.primary} />
+                    </Pressable>
+                ),
             }}
         />
 

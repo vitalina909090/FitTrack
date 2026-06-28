@@ -1,10 +1,11 @@
-import WaterModal from "@/modal/WaterModal";
 import WaterLogItem from "@/src/components/WaterLogItem";
 import { COLORS } from "@/src/constants/theme";
-import { WaterLog } from "@/src/types/workout";
+import WaterModal from "@/src/modal/WaterModal";
+import { WaterLog } from "@/src/types/waterTracker";
 import { useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const WaterTracker = () => {
   const [currentMl, setCurrentMl] = useState(0);
@@ -13,14 +14,18 @@ const WaterTracker = () => {
 
   const handleAddWater = (amount: number) => {
     setCurrentMl((prev) => prev + amount);
-    const time = new Date().toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit" });
+    const time = new Date().toLocaleTimeString("uk-UA", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     setLog((prev) => [{ id: Date.now().toString(), amount, time }, ...prev]);
   };
 
-  const fill = (currentMl / 1500) * 100;
+  const DAILY_TARGET = 1500;
+  const fill = (currentMl / DAILY_TARGET) * 100;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <AnimatedCircularProgress
         size={230}
         width={15}
@@ -31,7 +36,7 @@ const WaterTracker = () => {
         {() => (
           <View style={styles.textContainer}>
             <Text style={styles.textML}>
-              {currentMl}/{1500} ml
+              {currentMl}/{DAILY_TARGET} ml
             </Text>
             <Text style={styles.textSubtitle}>Daily Drink Target</Text>
           </View>
@@ -60,7 +65,7 @@ const WaterTracker = () => {
         setModalVisible={setModalVisible}
         handleAddWater={handleAddWater}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -68,7 +73,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    paddingTop: 32,
     paddingHorizontal: 16,
     gap: 20,
     backgroundColor: COLORS.background,
