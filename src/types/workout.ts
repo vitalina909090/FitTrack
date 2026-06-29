@@ -20,6 +20,8 @@ export type Workout = {
   duration: number;
   exercises: Exercise[];
   scheduledAt: string;
+  isCompleted: boolean;
+  sequence: number;
   completedAt?: string;
   notes?: string;
 };

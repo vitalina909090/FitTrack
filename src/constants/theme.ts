@@ -10,6 +10,10 @@ export const COLORS = {
   cardio:      '#EF4444',
   flexibility: '#10B981',
 
+  strengthLight:    '#e4e4ff54',
+  cardioLight:      '#ffe0e056',
+  flexibilityLight: '#cdffee52',
+
   background:  '#F9FAFB',
   surface:     '#FFFFFF',
   border:      '#E5E7EB',
@@ -19,6 +23,7 @@ export const COLORS = {
   textTertiary:  '#9CA3AF',
 
   success: '#10B981',
+  successLight: '#cdffee52',
   warning: '#F59E0B',
   error:   '#EF4444',
 } as const;

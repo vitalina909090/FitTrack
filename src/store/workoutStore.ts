@@ -13,7 +13,8 @@ type WorkoutStore = {
     deleteWorkout: (id: string) => void,
     updateWorkout: (id: string, workout: Workout) => void,
     setFilter: (filter: WorkoutCategory | 'all') => void,
-    completeWorkout: (id: string) => void
+    completeWorkout: (id: string) => void,
+    uncompleteWorkout: (id: string) => void,
 }
  
  
@@ -29,10 +30,31 @@ export const useWorkoutStore = create<WorkoutStore>()(
                         workouts: [workout, ...state.workouts]
                     }))
                 },
-                deleteWorkout: (id) => { },
+                deleteWorkout: (id) => {
+                    set(state => ({
+                        workouts: state.workouts.filter(w => w.id !== id)
+                    }))
+                 },
                 updateWorkout: (id, workout) => {},
                 setFilter: (filter) => {},
-                completeWorkout: (id) => {}
+                completeWorkout: (id) => {
+                    set(state => ({
+                        workouts: state.workouts.map(w =>
+                            w.id === id
+                                ? { ...w, isCompleted: true, completedAt: new Date().toISOString() }
+                                : w
+                        )
+                    }))
+                },
+                uncompleteWorkout: (id) => {
+                    set(state => ({
+                        workouts: state.workouts.map(w =>
+                            w.id === id
+                                ? { ...w, isCompleted: false, completedAt: undefined }
+                                : w
+                        )
+                    }))
+                },            
         }),
         // конфігурація  persist
         {

@@ -13,6 +13,8 @@ export const MOCK_WORKOUTS: Workout[] = [
     category: "strength",
     duration: 60,
     scheduledAt: "2025-01-20T09:00:00",
+    isCompleted: false,
+    sequence: 1,
     exercises: [
       { id: "e1", name: "Присідання зі штангою", sets: 4, reps: 8, weight: 80 },
       { id: "e2", name: "Жим лежачи", sets: 4, reps: 8, weight: 70 },
@@ -26,6 +28,8 @@ export const MOCK_WORKOUTS: Workout[] = [
     category: "cardio",
     duration: 30,
     scheduledAt: "2025-01-21T07:00:00",
+    isCompleted: false,
+    sequence: 2,
     exercises: [
       { id: "e5", name: "Бурпі", sets: 4, reps: 15 },
       { id: "e6", name: "Скакалка", sets: 4, reps: 1, durationSec: 60 },
@@ -38,6 +42,8 @@ export const MOCK_WORKOUTS: Workout[] = [
     category: "flexibility",
     duration: 45,
     scheduledAt: "2025-01-22T08:00:00",
+    isCompleted: false,
+    sequence: 3,
     exercises: [
       {
         id: "e8",
@@ -62,6 +68,8 @@ export const MOCK_WORKOUTS: Workout[] = [
     category: "strength",
     duration: 55,
     scheduledAt: "2025-01-23T09:00:00",
+    isCompleted: false,
+    sequence: 4,
     exercises: [
       { id: "e11", name: "Мертва тяга", sets: 4, reps: 6, weight: 100 },
       { id: "e12", name: "Підтягування", sets: 4, reps: 8 },
@@ -82,3 +90,9 @@ export const WaterTare: WaterTareItem[] = [
   { value: 300, icon: "bottle-tonic-outline"},
   { value: 500, icon: "bottle-wine-outline"},
 ];
+
+export const categoryText = {
+  'strength': 'Сила',
+  'cardio': 'Кардіо',
+  'flexibility': 'Гнучкість',
+}
