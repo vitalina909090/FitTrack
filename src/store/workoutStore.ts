@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Workout, WorkoutCategory } from "../types/workout";
+import { Exercise, Workout, WorkoutCategory } from "../types/workout";
 import { storage } from "./storage";
 import { MOCK_WORKOUTS } from "../constants/mockData";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -10,11 +10,12 @@ type WorkoutStore = {
  
     // дії
     addWorkout: (workout: Workout) => void,
-    deleteWorkout: (id: string) => void,
+    // deleteWorkout: (id: string) => void,
     updateWorkout: (id: string, workout: Workout) => void,
     setFilter: (filter: WorkoutCategory | 'all') => void,
-    completeWorkout: (id: string) => void,
-    uncompleteWorkout: (id: string) => void,
+    // completeWorkout: (id: string) => void,
+    // uncompleteWorkout: (id: string) => void,
+    reorderExercises: (workoutId: string, exercises: Exercise[]) => void;
 }
  
  
@@ -30,32 +31,40 @@ export const useWorkoutStore = create<WorkoutStore>()(
                         workouts: [workout, ...state.workouts]
                     }))
                 },
-                deleteWorkout: (id) => {
-                    set(state => ({
-                        workouts: state.workouts.filter(w => w.id !== id)
-                    }))
-                 },
+                // deleteWorkout: (id) => {
+                //     set(state => ({
+                //         workouts: state.workouts.filter(w => w.id !== id)
+                //     }))
+                //  },
                 updateWorkout: (id, workout) => {},
                 setFilter: (filter) => {},
-                completeWorkout: (id) => {
-                    set(state => ({
-                        workouts: state.workouts.map(w =>
-                            w.id === id
-                                ? { ...w, isCompleted: true, completedAt: new Date().toISOString() }
-                                : w
-                        )
-                    }))
+                // completeWorkout: (id) => {
+                //     set(state => ({
+                //         workouts: state.workouts.map(w =>
+                //             w.id === id
+                //                 ? { ...w, isCompleted: true, completedAt: new Date().toISOString() }
+                //                 : w
+                //         )
+                //     }))
+                // },
+                // uncompleteWorkout: (id) => {
+                //     set(state => ({
+                //         workouts: state.workouts.map(w =>
+                //             w.id === id
+                //                 ? { ...w, isCompleted: false, completedAt: undefined }
+                //                 : w
+                //         )
+                //     }))
+                // },
+                reorderExercises: (workoutId, exercises) => {
+                    set((state) => ({
+                    workouts: state.workouts.map((w) =>
+                        w.id === workoutId ? { ...w, exercises } : w,
+                    ),
+                    }));                
+
                 },
-                uncompleteWorkout: (id) => {
-                    set(state => ({
-                        workouts: state.workouts.map(w =>
-                            w.id === id
-                                ? { ...w, isCompleted: false, completedAt: undefined }
-                                : w
-                        )
-                    }))
-                },            
-        }),
+    }),
         // конфігурація  persist
         {
             name: "workout-store", // сключ в AsyncStorage

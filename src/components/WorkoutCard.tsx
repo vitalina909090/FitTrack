@@ -109,7 +109,7 @@ const WorkoutCard = ({ workout, onPress, onDelete, onComplete}: Props) => {
         onComplete(workout.id);
     };
 
-    const rightBtn = workout.isCompleted
+    const rightBtn = workout.completedAt
         ? { icon: 'arrow-undo-outline' as keyof typeof Ionicons.glyphMap, text: 'Повернути', color: COLORS.warning }
         : { icon: 'checkmark-done' as keyof typeof Ionicons.glyphMap, text: 'Готово', color: COLORS.success };
 
@@ -147,7 +147,7 @@ const WorkoutCard = ({ workout, onPress, onDelete, onComplete}: Props) => {
                                 <Text style={styles.title}>
                                     {workout.title}
                                 </Text>
-                                {workout.isCompleted ? (
+                                {workout.completedAt ? (
                                     <View style={[styles.badge, { backgroundColor: COLORS.successLight}]}>
                                         <Ionicons name="checkmark" size={13} color={COLORS.success} />
                                         <Text style={[styles.badgeText, { color: COLORS.success }]}>Виконано</Text>
@@ -168,11 +168,6 @@ const WorkoutCard = ({ workout, onPress, onDelete, onComplete}: Props) => {
                                 </View>
 
                                 <View style={styles.metaItem}>
-                                    <Ionicons name="barbell-outline" size={13} color={COLORS.textSecondary} />
-                                    <Text style={styles.metaText}>{workout.exercises.length} вправ</Text>
-                                </View>
-
-                                <View style={styles.metaItem}>
                                     <Ionicons
                                         name={workout.completedAt ? "checkmark-circle-outline" : "calendar-outline"}
                                         size={13}
@@ -188,9 +183,9 @@ const WorkoutCard = ({ workout, onPress, onDelete, onComplete}: Props) => {
                             </View>
                         </View>
                         <Ionicons
-                            name={workout.isCompleted ? "checkmark-circle" : "chevron-forward"}
+                            name={workout.completedAt ? "checkmark-circle" : "chevron-forward"}
                             size={18}
-                            color={workout.isCompleted ? COLORS.success : COLORS.textSecondary}
+                            color={workout.completedAt ? COLORS.success : COLORS.textSecondary}
                             style={styles.arrow}
                         />
                     </Pressable>

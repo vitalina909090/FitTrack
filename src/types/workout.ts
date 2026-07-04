@@ -11,6 +11,7 @@ export type Exercise = {
   reps: number;
   weight?: number;
   durationSec?: number;
+  orderIndex: number;
 };
 
 export type Workout = {
@@ -18,11 +19,9 @@ export type Workout = {
   title: string;
   category: WorkoutCategory;
   duration: number;
-  exercises: Exercise[];
+  exercises?: Exercise[];
   scheduledAt: string;
-  isCompleted: boolean;
-  sequence: number;
-  completedAt?: string;
-  notes?: string;
+  completedAt: string | null;
+  notes: string | null;
+ 
 };
-

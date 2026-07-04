@@ -4,6 +4,9 @@ import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-nativ
 import { useWorkoutStore } from '../store/workoutStore';
 import { WorkoutCategory } from '../types/workout';
 import { COLORS } from '../constants/theme';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAddWorkout } from '../hooks/useWorkouts';
+import { NewWorkout } from '../db/schema';
 
 type Props = {
     visible: boolean, 
@@ -19,7 +22,10 @@ const categories: { label: string; value: WorkoutCategory }[] = [
 
 
 const AddWorkoutModal = ({visible, onClose}: Props) => {
-    const addWorkout = useWorkoutStore(state => state.addWorkout);
+    // const addWorkout = useWorkoutStore(state => state.addWorkout);
+
+    const { mutate: addWorkout, isPending } = useAddWorkout();
+
 
     const [name, setName] = useState('');
     const [duration, setDuration] = useState('');
@@ -28,14 +34,26 @@ const AddWorkoutModal = ({visible, onClose}: Props) => {
 
     const handleAdd = () => {
         if (!validate()) return;
-        addWorkout({
+        const newWorkout : NewWorkout = {
             id: Date.now().toString(),
             title: name.trim(),
             category,            
             duration: parseInt(duration) || 60,
             scheduledAt: new Date().toISOString(),
-            exercises: [],
-        });
+            createdAt: new Date().toISOString(),            
+        }
+        addWorkout(
+            { workout: newWorkout, exercises: [] },
+            { 
+                onSuccess: () => { 
+                    handleClose();
+                },
+                onError: (error) => {
+                    console.log(error);
+                }
+            },
+
+        );
         handleClose();
     };
 
@@ -67,8 +85,9 @@ const AddWorkoutModal = ({visible, onClose}: Props) => {
             animationType="slide"
             presentationStyle="fullScreen"   // IOS
             onRequestClose={onClose}
+            statusBarTranslucent
         >
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.title}>Нове тренування</Text>
                     <Pressable onPress={handleClose} hitSlop={12}>
@@ -123,7 +142,7 @@ const AddWorkoutModal = ({visible, onClose}: Props) => {
                 <Pressable style={styles.addBtn} onPress={handleAdd}>
                     <Text style={styles.addBtnText}>Додати тренування</Text>
                 </Pressable>                              
-            </View>  
+            </SafeAreaView>  
 
         </Modal>
     );
