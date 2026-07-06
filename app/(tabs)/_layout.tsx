@@ -116,7 +116,22 @@ const TabLayout = () => {
                     />
                 )
             }}
-        />        
+        />
+
+        <Tabs.Screen
+            name="news"
+            options={{
+                title: "Новини",
+                tabBarIcon: ({ focused, color, size }) => (
+                    <Ionicons 
+                        name={focused ? "newspaper" : "newspaper-outline"} 
+                        size={size}
+                        color={color}
+                    />
+                )
+            }}
+        />
+
     </ Tabs>;
 }
 
