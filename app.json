@@ -19,13 +19,29 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.vitalina_06.FitTrack"
     },
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true,
+          "barcodeScannerEnabled": true
+        }
+      ],      
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "FitTrack рахує кроки та відстань, використовуючи дані з датчиків руху вашого пристрою. Дозвольте доступ до датчиків руху, щоб отримати точні дані про вашу активність."
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
@@ -44,6 +60,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5fc377c3-92d1-469a-8a03-d349a02fcb4e"
+      }
     }
   }
 }

@@ -5,12 +5,23 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { BORDER_RADIUS, COLORS, FONT_SIZE, SHADOW, SPACING } from '../constants/theme';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { scheduleOnRN } from 'react-native-worklets';
 
 type Props = {
     exercises: Exercise[];
     accentColor: string;
     onReorder: (exercises: Exercise[]) => void;
 }
+
+type DraggableRowProps = {
+    exercise: Exercise;
+    index: number;
+    count: number;
+    accentColor: string;
+    exercises: Exercise[];
+    onReorder: (exercises: Exercise[]) => void;
+}
+
 // весь список
 const DraggableExerciseList = ({exercises, accentColor, onReorder }: Props) => {
     return (
@@ -21,35 +32,44 @@ const DraggableExerciseList = ({exercises, accentColor, onReorder }: Props) => {
                     index={index}
                     exercise={exercise}
                     count={exercises.length}
-                    accentColor={accentColor} />))}
+                    accentColor={accentColor} 
+                    exercises={exercises}
+                    onReorder={onReorder} />))}
         </View>
     );
 }
 
+const ROW_HEIGHT = 70;
 
-type DraggableRowProps = {
-    exercise: Exercise;
-    index: number;
-    count: number;
-    accentColor: string;
-}
+
 // одна вправа
-const DraggableRow = ({ exercise, index, count, accentColor }: DraggableRowProps) => {
-
-    const id = exercise.id;
+const DraggableRow = ({ exercise, index, count, accentColor, exercises, onReorder }: DraggableRowProps) => {
     const translateY = useSharedValue(0);
     const isDragging = useSharedValue(false);
 
+    const reorderWorkouts = (newIndex: number, oldIndex: number) => {
+      const result = [...exercises];
+      const [moved] = result.splice(oldIndex, 1);
+      result.splice(newIndex, 0, moved);
+      onReorder(result);
+    }
 
     const pan = Gesture.Pan()
         .onStart(() => {
           isDragging.value = true;
          })
         .onUpdate((e) => { 
-            translateY.value = e.translationY;
+            const minY = -index * ROW_HEIGHT;
+            const maxY = (count - 1 - index) * ROW_HEIGHT;
+            translateY.value = Math.max(minY, Math.min(maxY, e.translationY)); 
         })
-        .onEnd(() => { 
+        .onEnd(() => {
+            const newIndex = index + Math.round(translateY.value / ROW_HEIGHT);
             isDragging.value = false;
+            translateY.value = 0;
+            if (newIndex !== index) {
+              scheduleOnRN(reorderWorkouts, newIndex, index);
+            }
         })
     
     const animatedStyle = useAnimatedStyle(() => ({

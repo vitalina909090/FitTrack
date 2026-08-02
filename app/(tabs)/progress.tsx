@@ -1,39 +1,29 @@
-import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import ProgressPhotoGallery from "@/src/components/ProgressPhotoGallery";
+import usePedometer from "@/src/hooks/usePedometer";
+import { StyleSheet, Text, View } from "react-native";
 
-const ProgressScreen = () => {
-    const scale = useSharedValue(1);
+export default function ProgressScreen() {
+  const { isAvailable, isPermissionGranted, steps, error } = usePedometer();
 
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{scale: scale.value}]
-        }
-    })
+  return (
+    <View style={styles.container}>
+      {!isAvailable && (
+        <Text>{error ?? "Перевірка доступності крокоміра..."}</Text>
+      )}
+      {isAvailable && !isPermissionGranted && <Text>{error}</Text>}
 
-    const handlePress = () => {
-        if (scale.value === 1) {
-            scale.value = withSpring(0.5, { stiffness: 1500, damping: 50, mass: 10 });
-        } else {
-            scale.value = withTiming(1, { duration: 1000});
-        }
-    }
-    return (
-        <SafeAreaView style={{flex: 1}}>
-            <Animated.View style={[styles.box, animatedStyle]}/>
-            <Button title="Zoom" onPress={handlePress}/>
-        </SafeAreaView>
-    );
+      <Text>{steps} кроків</Text>
+
+      <ProgressPhotoGallery />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    box: {
-        width: 100,
-        height: 100,
-        backgroundColor: 'dodgerblue',
-        marginBottom: 20
-    }
-})
-
-export default ProgressScreen;
+  container: {
+    flex: 1,
+    marginTop: 15,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

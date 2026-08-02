@@ -30,6 +30,14 @@ export function runMigrations() {
       order_index  INTEGER NOT NULL
     );
   `);
+
+  sqlite.execSync(`
+    CREATE TABLE IF NOT EXISTS progress_photos (
+      id           TEXT PRIMARY KEY NOT NULL,
+      photo_uri    TEXT NOT NULL,
+      created_at   TEXT NOT NULL
+    );
+  `);
  
   console.log("✅ Migrations completed");
 }
