@@ -7,12 +7,16 @@ export default function ProgressScreen() {
 
   return (
     <View style={styles.container}>
-      {!isAvailable && (
-        <Text>{error ?? "Перевірка доступності крокоміра..."}</Text>
-      )}
-      {isAvailable && !isPermissionGranted && <Text>{error}</Text>}
+      <View style={styles.pedometer}>
+        {!isAvailable && (
+          <Text>{error ?? "Перевірка доступності крокоміра..."}</Text>
+        )}
+        {isAvailable && !isPermissionGranted && <Text>{error}</Text>}
 
-      <Text>{steps} кроків</Text>
+        <Text>{steps} кроків</Text>
+
+      </View>
+
 
       <ProgressPhotoGallery />
     </View>
@@ -22,8 +26,10 @@ export default function ProgressScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 15,
-    alignItems: "center",
-    justifyContent: "center",
+    margin: 15,
+    gap: 20,
   },
+  pedometer: {
+    alignItems: 'center',    
+  }
 });
