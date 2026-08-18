@@ -13,8 +13,8 @@ const EAS_PROJECT_ID = '5fc377c3-92d1-469a-8a03-d349a02fcb4e'; // реальни
 export default ({ config }: ConfigContext): ExpoConfig => ({
     ...config, // app.json
     name: appName,
-    slug: 'fit-track',
-    version: '1.0.0',
+    slug: 'FitTrack',
+    version: '1.0.0', 
     orientation: 'portrait',
     icon: "./assets/images/icon.png",
     scheme: "fittrack", // потрібно для deep linking та expo-updates
@@ -26,6 +26,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     android: {
         package: bundleId,
+        googleServicesFile: "./google-services.json",
         adaptiveIcon: {
             backgroundColor: "#E6F4FE",
             foregroundImage: "./assets/images/android-icon-foreground.png",
@@ -60,7 +61,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           }
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      [
+        "expo-notifications",
+        {
+          icon: "./assets/images/icon.png",
+          color: "#d44c4c",
+        }
+      ]
     ],        
     extra: {
         router: {},
@@ -70,4 +78,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         apiUrl: process.env.API_URL || "https://api.fittrack.com", // URL API сервера бекенду
         variant: APP_VARIANT,
     },
+    runtimeVersion: {
+      policy: "fingerprint",
+    },       
+    updates: {
+      url: `https://u.expo.dev/${EAS_PROJECT_ID}`,
+    },
+     
 });

@@ -9,6 +9,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, SectionList, StyleSheet, Text, View } from 'react-native';
 
+
 const HomeScreen = () => {
     const { data: workouts, isLoading, isError } = useWorkouts();
 
@@ -62,6 +63,10 @@ const HomeScreen = () => {
                     contentContainerStyle={styles.list}
                 />
             )}
+            
+            <View>
+                <Text>Привіт!</Text>
+            </View>
 
             <AddWorkoutModal visible={isModalOpen} onClose={closeModal} />
         </View>
